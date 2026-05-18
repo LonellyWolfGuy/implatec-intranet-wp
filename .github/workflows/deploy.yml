@@ -13,21 +13,6 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 🚀 Sync files via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        # Pasta remota no servidor WordPress onde está a pasta da intranet (ex: public_html/intranet/)
-        server-dir: ${{ secrets.FTP_REMOTE_DIR }} 
-        local-dir: ./
-        port: 21
-        protocol: ftp
-        security: loose
-        exclude: |
-          **/.git*
-          **/.git*/**
-          README.md
-          download.ps1
-          intranet-implatec.zip
+    - name: 🚀 Sync files via LFTP
+      run: |
+        lftp -c "set ftp:ssl-allow no; set ftp:passive-mode true; open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}'; mirror -R --parallel=5 --exclude-glob '.git*' --exclude-glob 'README.md' --exclude-glob 'download.ps1' --exclude-glob 'intranet-implatec.zip' ./ '${{ secrets.FTP_REMOTE_DIR }}'"
