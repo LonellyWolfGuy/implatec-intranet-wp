@@ -13,7 +13,17 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 🚀 Sync files via LFTP
+    - name: 🚀 Upload files via LFTP
       run: |
         sudo apt-get update && sudo apt-get install -y lftp
-        lftp -c "debug 3; set ftp:ssl-allow no; set ftp:passive-mode true; open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}'; mirror -R --transfer-all --parallel=5 --exclude-glob '.git*' --exclude-glob 'README.md' --exclude-glob 'download.ps1' --exclude-glob 'intranet-implatec.zip' ./ '${{ secrets.FTP_REMOTE_DIR }}'"
+        lftp -c "
+          set ftp:ssl-allow no;
+          set ftp:passive-mode true;
+          open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}';
+          cd ${{ secrets.FTP_REMOTE_DIR }};
+          put -O . index.html;
+          put -O . styles.css;
+          put -O . .htaccess;
+          put -O . logo-novo.png;
+          quit
+        "
