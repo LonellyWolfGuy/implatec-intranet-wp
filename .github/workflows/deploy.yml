@@ -16,4 +16,4 @@ jobs:
     - name: 🚀 Sync files via LFTP
       run: |
         sudo apt-get update && sudo apt-get install -y lftp
-        lftp -c "set ftp:ssl-allow no; set ftp:passive-mode true; open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}'; mirror -R --parallel=5 --exclude-glob '.git*' --exclude-glob 'README.md' --exclude-glob 'download.ps1' --exclude-glob 'intranet-implatec.zip' ./ '${{ secrets.FTP_REMOTE_DIR }}'"
+        lftp -c "debug 3; set ftp:ssl-allow no; set ftp:passive-mode true; open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}'; mirror -R --parallel=5 --exclude-glob '.git*' --exclude-glob 'README.md' --exclude-glob 'download.ps1' --exclude-glob 'intranet-implatec.zip' ./ '${{ secrets.FTP_REMOTE_DIR }}'"
