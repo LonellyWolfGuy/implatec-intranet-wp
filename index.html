@@ -64,26 +64,87 @@
             <!-- News Board -->
             <section class="news-board glass-panel">
                 <h2><i class="fa-solid fa-newspaper"></i> Mural de Avisos e Notícias</h2>
+                
+                <!-- Abas do Mural -->
+                <div class="news-tabs">
+                    <button class="tab-btn active" onclick="switchNewsTab(event, 'internos')">
+                        <i class="fa-solid fa-bullhorn"></i> Comunicados
+                    </button>
+                    <button class="tab-btn" onclick="switchNewsTab(event, 'plastico')">
+                        <i class="fa-solid fa-recycle"></i> Setor de Plásticos
+                    </button>
+                    <button class="tab-btn" onclick="switchNewsTab(event, 'economia')">
+                        <i class="fa-solid fa-chart-line"></i> Economia
+                    </button>
+                </div>
+
                 <div class="news-list">
-                    <article class="news-card">
+                    <!-- Comunicados Internos -->
+                    <article class="news-card" data-category="internos">
                         <div class="news-date">17 Abr</div>
                         <div class="news-content">
                             <h3>Nova Intranet no Ar!</h3>
                             <p>Bem-vindos ao nosso novo portal corporativo. Esta página será a tela inicial padrão de todos os computadores para facilitar o acesso de vocês aos nossos sistemas e avisos diários.</p>
                         </div>
                     </article>
-                    <article class="news-card">
+                    <article class="news-card" data-category="internos">
                         <div class="news-date">15 Abr</div>
                         <div class="news-content">
                             <h3>Manutenção Preventiva de TI</h3>
                             <p>Na próxima sexta-feira, das 18h às 19h, o sistema de envio de chamados passará por instabilidades visando atualizações de segurança.</p>
                         </div>
                     </article>
-                    <article class="news-card">
+                    <article class="news-card" data-category="internos">
                         <div class="news-date">10 Abr</div>
                         <div class="news-content">
                             <h3>Campanha de Metas Alcançadas</h3>
                             <p>Parabéns equipe! A meta do trimestre foi batida. Confiram o relatório detalhado enviado nos e-mails de todos.</p>
+                        </div>
+                    </article>
+
+                    <!-- Setor Plásticos -->
+                    <article class="news-card hidden" data-category="plastico">
+                        <div class="news-date">18 Mai</div>
+                        <div class="news-content">
+                            <h3>Faturamento de Plásticos deve atingir R$ 168 Bilhões em 2026</h3>
+                            <p>A Abiplast projeta um crescimento de 2% para a indústria de transformação em 2026, impulsionado pela forte demanda de embalagens plásticas nos segmentos de alimentos e bebidas.</p>
+                        </div>
+                    </article>
+                    <article class="news-card hidden" data-category="plastico">
+                        <div class="news-date">14 Mai</div>
+                        <div class="news-content">
+                            <h3>Operação "Refugo" combate fraudes tributárias no setor</h3>
+                            <p>Receita Federal e MPSP desarticularam esquema bilionário de sonegação e emissão de notas frias de reciclagem de plástico, protegendo a concorrência leal de indústrias éticas.</p>
+                        </div>
+                    </article>
+                    <article class="news-card hidden" data-category="plastico">
+                        <div class="news-date">11 Mai</div>
+                        <div class="news-content">
+                            <h3>Logística Reversa e o Decreto do Plástico</h3>
+                            <p>Indústrias aceleram a adaptação às regras de logística reversa e economia circular previstas para 2026. Investimentos em reciclagem avançada e transição ecológica ganham força.</p>
+                        </div>
+                    </article>
+
+                    <!-- Economia -->
+                    <article class="news-card hidden" data-category="economia">
+                        <div class="news-date">16 Mai</div>
+                        <div class="news-content">
+                            <h3>Indústria projeta R$ 31,7 Bilhões em Investimentos até 2027</h3>
+                            <p>Pesquisas apontam aporte recorde focado em transição verde, eficiência energética e automação industrial para impulsionar a produtividade e a competitividade do setor nacional.</p>
+                        </div>
+                    </article>
+                    <article class="news-card hidden" data-category="economia">
+                        <div class="news-date">13 Mai</div>
+                        <div class="news-content">
+                            <h3>Impacto da Reforma Tributária em 2026</h3>
+                            <p>Empresas de transformação iniciam fase de transição para o novo modelo de impostos (IBS/CBS). Analistas de mercado preveem simplificação burocrática no longo prazo.</p>
+                        </div>
+                    </article>
+                    <article class="news-card hidden" data-category="economia">
+                        <div class="news-date">08 Mai</div>
+                        <div class="news-content">
+                            <h3>PIB da Indústria cresce no primeiro trimestre</h3>
+                            <p>O setor industrial puxa o crescimento do PIB nacional nos primeiros meses de 2026, impulsionado pelo consumo das famílias brasileiras e pela flexibilização gradual das taxas de juros.</p>
                         </div>
                     </article>
                 </div>
@@ -143,6 +204,27 @@
     </div>
 
     <script>
+        // Alternar abas do Mural de Notícias
+        function switchNewsTab(event, tabId) {
+            // 1. Remover active de todos os botões na mesma barra
+            const tabContainer = event.currentTarget.parentElement;
+            const buttons = tabContainer.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // 2. Adicionar active ao botão clicado
+            event.currentTarget.classList.add('active');
+
+            // 3. Filtrar os cards de notícias
+            const cards = document.querySelectorAll('.news-list .news-card');
+            cards.forEach(card => {
+                if (card.getAttribute('data-category') === tabId) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
         // Relógio e Data em tempo real
         function updateDateTime() {
             const now = new Date();

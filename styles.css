@@ -681,3 +681,67 @@ footer {
     border-radius: 50%;
     background: var(--danger);
 }
+
+/* ==========================================
+   TABELAS E CATEGORIAS DO MURAL DE NOTÍCIAS 
+   ========================================== */
+.news-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn i {
+    font-size: 0.95rem;
+    transition: transform 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.tab-btn:hover i {
+    transform: scale(1.1);
+}
+
+body.light-mode .tab-btn:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.15);
+}
+
+/* Esconder itens que não são da categoria ativa */
+.news-card {
+    display: flex;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.news-card.hidden {
+    display: none !important;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
