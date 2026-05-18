@@ -24,6 +24,7 @@ jobs:
         local-dir: ./
         port: 21
         protocol: ftp
+        security: loose
         exclude: |
           **/.git*
           **/.git*/**
