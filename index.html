@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet Implatec</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="header glass-panel">
+            <div class="logo">
+                <img src="logo-novo.png" alt="Logo Implatec" class="brand-logo">
+                <div class="logo-divider"></div>
+                <div class="logo-intranet">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span>INTRANET</span>
+                </div>
+            </div>
+            <div class="header-info" style="display: flex; align-items: center; gap: 20px;">
+                <div class="date-time" id="datetime">
+                    <!-- Será preenchido via JS -->
+                </div>
+                <button id="theme-toggle" class="theme-btn" title="Alternar Tema Claro/Escuro">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            
+            <!-- Quick Actions -->
+            <section class="quick-actions glass-panel">
+                <h2><i class="fa-solid fa-bolt"></i> Acesso Rápido</h2>
+                <div class="action-buttons">
+                    <a href="http://link-do-seu-implatec-chamados.com" target="_blank" class="btn-action">
+                        <i class="fa-solid fa-headset"></i>
+                        <span>Abrir Chamado T.I.</span>
+                    </a>
+                    <a href="https://m3.webhaus.com.br:2096/" target="_blank" class="btn-action">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Webmail Corporativo</span>
+                    </a>
+                    <a href="http://192.168.23.100:8088/webapp/" target="_blank" class="btn-action">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Acessar ERP</span>
+                    </a>
+                    <a href="https://implatec.com.br/consulta" target="_blank" class="btn-action">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Consulta Sintegra</span>
+                    </a>
+                    <a href="#" class="btn-action">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>Comunicador</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- News Board -->
+            <section class="news-board glass-panel">
+                <h2><i class="fa-solid fa-newspaper"></i> Mural de Avisos e Notícias</h2>
+                <div class="news-list">
+                    <article class="news-card">
+                        <div class="news-date">17 Abr</div>
+                        <div class="news-content">
+                            <h3>Nova Intranet no Ar!</h3>
+                            <p>Bem-vindos ao nosso novo portal corporativo. Esta página será a tela inicial padrão de todos os computadores para facilitar o acesso de vocês aos nossos sistemas e avisos diários.</p>
+                        </div>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">15 Abr</div>
+                        <div class="news-content">
+                            <h3>Manutenção Preventiva de TI</h3>
+                            <p>Na próxima sexta-feira, das 18h às 19h, o sistema de envio de chamados passará por instabilidades visando atualizações de segurança.</p>
+                        </div>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">10 Abr</div>
+                        <div class="news-content">
+                            <h3>Campanha de Metas Alcançadas</h3>
+                            <p>Parabéns equipe! A meta do trimestre foi batida. Confiram o relatório detalhado enviado nos e-mails de todos.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Useful Links -->
+            <section class="useful-links glass-panel">
+                <h2><i class="fa-solid fa-link"></i> Guias e Documentos</h2>
+                <ul class="links-list">
+                    <li>
+                        <a href="#"><i class="fa-solid fa-file-pdf text-danger"></i> Manual de Conduta.pdf</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-file-word text-info"></i> Formulário de Férias.docx</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-sitemap"></i> Organograma da Implatec</a>
+                    </li>
+                    <li>
+                        <a href="#" id="open-ramais-modal"><i class="fa-solid fa-address-book"></i> Ramais Internos</a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Birthdays Widget -->
+            <section class="extra-widget glass-panel">
+                <h2><i class="fa-solid fa-cake-candles" style="color: var(--secondary);"></i> Aniversariantes do Mês</h2>
+                <div class="widget-content">
+                    <div class="birthdays-highlight" style="background: rgba(16, 185, 129, 0.1); padding: 20px; border-radius: 12px; border-left: 4px solid var(--secondary); margin-bottom: 20px;">
+                        <ul id="birthday-list" style="list-style: none; font-size: 1.15rem; line-height: 1.8;">
+                            <!-- Aniversariantes carregados via JavaScript -->
+                            <li>Carregando...</li>
+                        </ul>
+                    </div>
+                    <div class="calendar-widget" style="margin-top: 10px;">
+                        <h3 style="font-size: 1.05rem; margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                            <span><i class="fa-regular fa-calendar-alt" style="color: var(--primary);"></i> <span id="calendar-month-name">Mês</span></span>
+                        </h3>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- JS vai preencher -->
+                        </div>
+                        <div class="holidays-list" id="holidays-list" style="margin-top: 15px; font-size: 0.85rem; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                            <!-- JS vai preencher os feriados do mês -->
+                        </div>
+                    </div>
+                    
+                    <div class="quote-box" style="margin-top: 20px;">
+                        <p>💭 "O sucesso de uma empresa é o resultado do trabalho de uma grande equipe."</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Implatec - Uso exclusivo para colaboradores.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Relógio e Data em tempo real
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('pt-BR', options);
+            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            document.getElementById('datetime').innerHTML = `
+                <div class="time">${timeStr}</div>
+                <div class="date">${dateStr.charAt(0).toUpperCase() + dateStr.slice(1)}</div>
+            `;
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // ==========================================
+        // SISTEMA DE ANIVERSARIANTES (INTEGRAÇÃO WORDPRESS - API) 
+        // ==========================================
+        
+        // Quando o site for pro ar no WordPress com o plguin ACF ativado, coloque a URL da API aqui.
+        // Exemplo: 'https://SUDOMINIO.com.br/wp-json/wp/v2/users'
+        // Deixe vazio para usar a lista local de testes.
+        const WP_USERS_API_URL = 'https://implatec.com.br/wp-json/wp/v2/users'; 
+
+        // Lista de testes (Simulando o formato de resposta da API do WordPress com ACF)
+        const colaboradoresMock = [
+            { name: "Anderson Dias Cezar", acf: { data_nascimento: "1982-11-01", data_admissao: "2010-04-15" } },
+            { name: "Anderson Pereira de Souza", acf: { data_nascimento: "1985-12-02", data_admissao: "2015-05-10" } },
+            { name: "Ari de Jesus Martins Ribeiro", acf: { data_nascimento: "1966-05-15", data_admissao: "2000-01-10" } },
+            { name: "Cleidivam Alves Rodrigues", acf: { data_nascimento: "2005-12-03", data_admissao: "2023-04-10" } },
+            { name: "Daniel Menezes Cordeiro Junior", acf: { data_nascimento: "2000-12-25", data_admissao: "2022-02-05" } },
+            { name: "Edson Rieg", acf: { data_nascimento: "1989-02-07", data_admissao: "2012-04-20" } },
+            { name: "Fernanda de Oliveira Buch", acf: { data_nascimento: "1989-08-25", data_admissao: "2020-03-12" } },
+            { name: "Jaziel Sant Ana da Silva", acf: { data_nascimento: "1960-05-20", data_admissao: "1995-11-01" } },
+            { name: "Jean Carlos Vicente", acf: { data_nascimento: "1993-09-28", data_admissao: "2017-08-15" } },
+            { name: "Jeniffer Rosangela de Souza Hug Walter", acf: { data_nascimento: "1986-09-04", data_admissao: "2019-07-22" } },
+            { name: "Jesse Santana da Silva", acf: { data_nascimento: "1953-04-20", data_admissao: "1998-04-18" } },
+            { name: "Jonas Ramos da Silva", acf: { data_nascimento: "1985-09-24", data_admissao: "2014-06-05" } },
+            { name: "Kayke Pablo Beil Kalfels", acf: { data_nascimento: "2004-10-01", data_admissao: "2024-01-15" } },
+            { name: "Mateus Ferreira Mendes", acf: { data_nascimento: "1999-03-23", data_admissao: "2021-04-02" } },
+            { name: "Maycon Sena Bezerra", acf: { data_nascimento: "2006-07-02", data_admissao: "2024-02-20" } },
+            { name: "Odenir Rassweiler", acf: { data_nascimento: "1967-09-14", data_admissao: "2005-09-10" } },
+            { name: "Renato Lemos Correa", acf: { data_nascimento: "1987-12-07", data_admissao: "2011-10-01" } },
+            { name: "Thayna Dorneles da Silveira", acf: { data_nascimento: "1999-06-10", data_admissao: "2023-04-25" } },
+            { name: "Thiago Fischer", acf: { data_nascimento: "1985-03-28", data_admissao: "2016-04-10" } },
+            { name: "Veralucia da Silva Alves de Oliveira", acf: { data_nascimento: "1972-02-14", data_admissao: "2008-04-05" } },
+            { name: "Victor Alves de Lima", acf: { data_nascimento: "1999-09-26", data_admissao: "2022-12-01" } }
+        ];
+
+        async function obterColaboradores() {
+            if (WP_USERS_API_URL) {
+                try {
+                    // Busca os usuários via API no servidor real do WordPress
+                    const response = await fetch(WP_USERS_API_URL);
+                    return await response.json();
+                } catch (erro) {
+                    console.error("Erro ao buscar aniversariantes no WordPress:", erro);
+                    return [];
+                }
+            } else {
+                // Modo offline: devolve a lista de testes
+                return colaboradoresMock;
+            }
+        }
+
+        async function carregarAniversariantes() {
+            const listaElement = document.getElementById('birthday-list');
+            const dataAtual = new Date();
+            const mesAtual = dataAtual.getMonth() + 1; // 1 a 12
+            const anoAtual = dataAtual.getFullYear();
+
+            const colaboradores = await obterColaboradores();
+
+            let eventosDoMes = [];
+
+            // Helper para extrair ano, mes e dia, aceitando formatos YYYY-MM-DD e YYYYMMDD
+            function processarData(dataString) {
+                if (!dataString) return null;
+                let ano, mes, dia;
+                if (dataString.includes('-')) {
+                    [ano, mes, dia] = dataString.split('-');
+                } else if (dataString.length === 8) {
+                    ano = dataString.substring(0, 4);
+                    mes = dataString.substring(4, 6);
+                    dia = dataString.substring(6, 8);
+                } else {
+                    return null;
+                }
+                return { ano: parseInt(ano, 10), mes: parseInt(mes, 10), dia: parseInt(dia, 10) };
+            }
+
+            // 1. Coleta aniversários pessoais e de empresa
+            colaboradores.forEach(user => {
+                if (!user.acf) return;
+
+                // Aniversário Pessoal
+                const dataNasc = processarData(user.acf.data_nascimento);
+                if (dataNasc && dataNasc.mes === mesAtual) {
+                    const idade = anoAtual - dataNasc.ano;
+                    eventosDoMes.push({
+                        nome: user.name,
+                        tipo: 'nascimento',
+                        dia: dataNasc.dia,
+                        mes: dataNasc.mes,
+                        anos: idade
+                    });
+                }
+
+                // Aniversário de Empresa
+                const dataAdm = processarData(user.acf.data_admissao);
+                if (dataAdm && dataAdm.mes === mesAtual) {
+                    const anosEmpresa = anoAtual - dataAdm.ano;
+                    // Se estiver no mês exato da contratação, ou acima de 0 anos (aniversários normais)
+                    if (anosEmpresa > 0) {
+                        eventosDoMes.push({
+                            nome: user.name,
+                            tipo: 'empresa',
+                            dia: dataAdm.dia,
+                            mes: dataAdm.mes,
+                            anos: anosEmpresa
+                        });
+                    } else if (anosEmpresa === 0) {
+                        eventosDoMes.push({
+                            nome: user.name,
+                            tipo: 'empresa',
+                            dia: dataAdm.dia,
+                            mes: dataAdm.mes,
+                            anos: 0 // Recém-contratado, boas vindas no mês
+                        });
+                    }
+                }
+            });
+
+            // 2. Ordena os eventos em ordem crescente (pelo dia)
+            eventosDoMes.sort((a, b) => a.dia - b.dia);
+
+            // 3. Monta a lista visual no HTML
+            if (eventosDoMes.length > 0) {
+                listaElement.innerHTML = eventosDoMes.map(evento => {
+                    const dataObj = new Date(anoAtual, evento.mes - 1, evento.dia);
+                    const formatador = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long' });
+                    const dataFormatada = formatador.format(dataObj);
+
+                    if (evento.tipo === 'nascimento') {
+                        return `
+                            <li style="margin-bottom: 12px; display: flex; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 1.3rem; margin-right: 8px;" title="Aniversário de Vida">🎂</span> 
+                                <strong>${evento.nome}</strong> &nbsp;- <span style="color: var(--text-muted); text-transform: capitalize; margin-left: 5px;">${dataFormatada}</span>
+                            </li>
+                        `;
+                    } else {
+                        const textoTempo = evento.anos === 0 ? 'Mês de contratação' : `${evento.anos} ano${evento.anos > 1 ? 's' : ''} de Implatec`;
+                        return `
+                            <li style="margin-bottom: 12px; display: flex; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 1.3rem; margin-right: 8px; color: #f59e0b;" title="Tempo de Empresa">💼</span> 
+                                <strong>${evento.nome}</strong> &nbsp;- <span style="color: var(--text-muted); text-transform: capitalize; margin-left: 5px;">${dataFormatada}</span> 
+                                <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #b45309; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 600; white-space: nowrap;">${textoTempo}</span>
+                            </li>
+                        `;
+                    }
+                }).join('');
+            } else {
+                listaElement.innerHTML = `<li><span style="color: var(--text-muted);">Nenhuma comemoração neste mês.</span></li>`;
+            }
+        }
+        
+        // Dispara ao iniciar a página
+        carregarAniversariantes();
+
+        // ==========================================
+        // SISTEMA DE CALENDÁRIO E FERIADOS
+        // ==========================================
+        function renderizarCalendario() {
+            const grid = document.getElementById('calendar-grid');
+            const holidaysContainer = document.getElementById('holidays-list');
+            const monthNameEl = document.getElementById('calendar-month-name');
+            
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = hoje.getMonth(); // 0-11
+            
+            // Feriados Nacionais (Brasil) - Formato fixo DD/MM
+            const feriadosGerais = [
+                { data: '01/01', nome: 'Confraternização Universal' },
+                { data: '13/02', nome: 'Carnaval' },
+                { data: '29/03', nome: 'Sexta-feira Santa' },
+                { data: '21/04', nome: 'Tiradentes' },
+                { data: '01/05', nome: 'Dia do Trabalho' },
+                { data: '30/05', nome: 'Corpus Christi' },
+                { data: '07/09', nome: 'Independência do Brasil' },
+                { data: '12/10', nome: 'Nossa Sr.a Aparecida' },
+                { data: '02/11', nome: 'Finados' },
+                { data: '15/11', nome: 'Proclamação da República' },
+                { data: '25/12', nome: 'Natal' }
+            ];
+
+            // Adicione os Feriados Municipais da sua cidade aqui
+            const feriadosLocais = [
+                // Exemplo: { data: '15/08', nome: 'Assunção de Nossa Senhora (Feriado Municipal)' }
+            ];
+
+            const todosFeriados = [...feriadosGerais, ...feriadosLocais];
+
+            const mesFormatado = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' }).format(hoje);
+            monthNameEl.textContent = mesFormatado.charAt(0).toUpperCase() + mesFormatado.slice(1);
+
+            const diasDaSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+            let htmlGrid = diasDaSemana.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+
+            const primeiroDia = new Date(ano, mes, 1).getDay();
+            const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+            // Espaços vazios
+            for (let i = 0; i < primeiroDia; i++) {
+                htmlGrid += `<div class="calendar-day empty"></div>`;
+            }
+
+            const feriadosDoMes = [];
+
+            // Dias do mês
+            for (let dia = 1; dia <= diasNoMes; dia++) {
+                const dataStr = `${String(dia).padStart(2, '0')}/${String(mes + 1).padStart(2, '0')}`;
+                const isHoje = (dia === hoje.getDate() && mes === hoje.getMonth() && ano === hoje.getFullYear());
+                const feriado = todosFeriados.find(f => f.data === dataStr);
+                
+                let classes = 'calendar-day';
+                if (isHoje) classes += ' today';
+                if (feriado) {
+                    classes += ' holiday';
+                    feriadosDoMes.push({ dia, ...feriado });
+                }
+
+                htmlGrid += `<div class="${classes}" ${feriado ? `title="${feriado.nome}"` : ''}>${dia}</div>`;
+            }
+
+            grid.innerHTML = htmlGrid;
+
+            // Renderizar lista de feriados
+            if (feriadosDoMes.length > 0) {
+                holidaysContainer.innerHTML = '<div style="margin-bottom:8px; font-weight:600; color:var(--text-main);"><i class="fa-solid fa-flag" style="color: var(--danger);"></i> Feriados este mês:</div>' + 
+                    feriadosDoMes.map(f => `
+                    <div class="holiday-item">
+                        <span class="dot"></span>
+                        <span><strong>${String(f.dia).padStart(2, '0')}</strong> - ${f.nome}</span>
+                    </div>
+                `).join('');
+            } else {
+                holidaysContainer.innerHTML = '<div style="color:var(--text-muted); font-style:italic; text-align: center;">Nenhum feriado previsto neste mês.</div>';
+            }
+        }
+        renderizarCalendario();
+
+        // Modal de Ramais
+        const ramaisModal = document.getElementById('ramais-modal');
+        const openRamaisBtn = document.getElementById('open-ramais-modal');
+        const closeRamaisBtn = document.getElementById('close-ramais-modal');
+
+        openRamaisBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            ramaisModal.classList.add('active');
+        });
+
+        closeRamaisBtn.addEventListener('click', () => {
+            ramaisModal.classList.remove('active');
+        });
+
+        // Fechar ao clicar fora
+        ramaisModal.addEventListener('click', (e) => {
+            if (e.target === ramaisModal) {
+                ramaisModal.classList.remove('active');
+            }
+        });
+    </script>
+
+    <!-- Modal de Ramais -->
+    <div class="modal-overlay" id="ramais-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-phone-volume"></i> Lista de Ramais</h2>
+                <button class="close-modal" id="close-ramais-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <table class="ramais-table">
+                    <thead>
+                        <tr>
+                            <th>ÁREA</th>
+                            <th>NOME</th>
+                            <th>RAMAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>RH</td><td>THAINA</td><td>200</td></tr>
+                        <tr><td>TI</td><td>THIAGO</td><td>202</td></tr>
+                        <tr><td>COORDENAÇÃO</td><td></td><td>203</td></tr>
+                        <tr><td>PRODUÇÃO</td><td></td><td>205</td></tr>
+                        <tr><td>COMERCIAL</td><td>JENIFFER</td><td>206</td></tr>
+                        <tr><td>COMERCIAL</td><td>JEAN</td><td>208</td></tr>
+                        <tr><td>PCP</td><td>EDSON</td><td>207</td></tr>
+                        <tr><td>DIRETORIA</td><td>JAZIEL</td><td>209</td></tr>
+                        <tr><td>FERRAMENTARIA</td><td>RENATO</td><td>210</td></tr>
+                        <tr><td>FINANCEIRO</td><td>VERA</td><td>212</td></tr>
+                        <tr><td>QUALIDADE</td><td>FERNANDA</td><td>213</td></tr>
+                        <tr><td>FATURAMENTO</td><td>ANDERSON</td><td>215</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

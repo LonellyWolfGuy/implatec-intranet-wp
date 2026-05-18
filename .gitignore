@@ -1,0 +1,20 @@
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Temp Scripts
+download.ps1
+
+# OneDrive / Sync issues
+manual_lgpd_implatec.docx
+manual_lgpd_implatec.md
