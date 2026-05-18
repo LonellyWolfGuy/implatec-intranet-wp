@@ -1,0 +1,10 @@
+# Intranet Implatec - Bypass WordPress Routing
+# Este arquivo garante que o servidor sirva o index.html físico
+# e não redirecione para o WordPress.
+
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine Off
+</IfModule>
