@@ -413,9 +413,130 @@
                 listaElement.innerHTML = `<li><span style="color: var(--text-muted);">Nenhuma comemoração neste mês.</span></li>`;
             }
         }
+
+        // ==========================================
+        // SISTEMA DE NOTÍCIAS DINÂMICAS (API RSS)
+        // ==========================================
+        const NEWS_CACHE_KEY = 'implatec_news_data';
+        const NEWS_CACHE_TIME_KEY = 'implatec_news_time';
+        const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias em milissegundos
+
+        function limparDescricao(html, maxLength = 180) {
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = html;
+            let text = tempDiv.textContent || tempDiv.innerText || "";
+            // Remove créditos de fontes comuns do Google News (ex: "... - O Globo")
+            text = text.replace(/\s+-\s+[^-\s]+$/, "");
+            if (text.length > maxLength) {
+                text = text.substring(0, maxLength) + "...";
+            }
+            return text;
+        }
+
+        function formatarDataRSS(pubDateStr) {
+            try {
+                // Formato retornado pelo rss2json: "2026-05-18 10:00:00"
+                const date = new Date(pubDateStr.replace(/-/g, "/"));
+                const dia = date.getDate();
+                const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+                const mesStr = meses[date.getMonth()];
+                return `${dia} ${mesStr}`;
+            } catch (e) {
+                const hoje = new Date();
+                return `${hoje.getDate()} ${["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"][hoje.getMonth()]}`;
+            }
+        }
+
+        function renderizarCategoria(categoria, itens) {
+            const container = document.querySelector('.news-list');
+            if (!container) return;
+
+            // 1. Remover cards antigos da categoria selecionada
+            const cardsAntigos = container.querySelectorAll(`.news-card[data-category="${categoria}"]`);
+            cardsAntigos.forEach(card => card.remove());
+
+            // 2. Criar novos cards vindos da API
+            itens.forEach(item => {
+                const cleanedDesc = limparDescricao(item.description || item.content);
+                const dateStr = formatarDataRSS(item.pubDate);
+                
+                const card = document.createElement('article');
+                // Mantém escondido por padrão se não for a aba inicial
+                card.className = `news-card hidden`;
+                card.setAttribute('data-category', categoria);
+                
+                // Transforma o card inteiro em um link clicável e com cursor pointer
+                card.setAttribute('onclick', `window.open('${item.link}', '_blank')`);
+                card.style.cursor = 'pointer';
+                
+                card.innerHTML = `
+                    <div class="news-date">${dateStr}</div>
+                    <div class="news-content">
+                        <h3>${item.title}</h3>
+                        <p>${cleanedDesc}</p>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        async function carregarNoticiasExternas() {
+            const dataAtual = new Date().getTime();
+            const cacheSalvo = localStorage.getItem(NEWS_CACHE_KEY);
+            const tempoSalvo = localStorage.getItem(NEWS_CACHE_TIME_KEY);
+
+            // Verifica se o cache é válido e menor de 7 dias
+            if (cacheSalvo && tempoSalvo && (dataAtual - tempoSalvo < SEVEN_DAYS_MS)) {
+                try {
+                    const noticias = JSON.parse(cacheSalvo);
+                    if (noticias.plastico && noticias.economia) {
+                        renderizarCategoria('plastico', noticias.plastico);
+                        renderizarCategoria('economia', noticias.economia);
+                        console.log("Notícias carregadas do cache local (Válido por 7 dias).");
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Erro ao carregar notícias do cache local:", e);
+                }
+            }
+
+            // Se não tiver cache ou estiver expirado, busca na internet
+            try {
+                console.log("Buscando notícias em tempo real de Plásticos e Economia...");
+                const urlPlastico = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.google.com%2Frss%2Fsearch%3Fq%3Dsetor%2Bde%2Bplastico%2Bbrasil%2Bindustria%26hl%3Dpt-BR%26gl%3DBR%26ceid%3DBR%3Apt-419';
+                const urlEconomia = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fg1.globo.com%2Frss%2Fg1%2Feconomia%2F';
+
+                const [resPlastico, resEconomia] = await Promise.all([
+                    fetch(urlPlastico).then(r => r.json()),
+                    fetch(urlEconomia).then(r => r.json())
+                ]);
+
+                if (resPlastico.status === 'ok' && resEconomia.status === 'ok') {
+                    const itensPlastico = resPlastico.items.slice(0, 3);
+                    const itensEconomia = resEconomia.items.slice(0, 3);
+
+                    // Salva no LocalStorage para renovação em 1 semana (7 dias)
+                    const dadosNoticias = {
+                        plastico: itensPlastico,
+                        economia: itensEconomia
+                    };
+                    localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify(dadosNoticias));
+                    localStorage.setItem(NEWS_CACHE_TIME_KEY, dataAtual.toString());
+
+                    // Renderiza
+                    renderizarCategoria('plastico', itensPlastico);
+                    renderizarCategoria('economia', itensEconomia);
+                    console.log("Notícias atualizadas com sucesso e salvas para cache de 7 dias.");
+                }
+            } catch (erro) {
+                console.warn("Falha de conexão ao buscar notícias dinâmicas. Mantendo fallbacks estáticos de segurança.", erro);
+            }
+        }
         
         // Dispara ao iniciar a página
         carregarAniversariantes();
+        carregarNoticiasExternas();
 
         // ==========================================
         // SISTEMA DE CALENDÁRIO E FERIADOS
