@@ -519,10 +519,69 @@
                 console.warn("Falha de conexão ao buscar notícias dinâmicas. Mantendo fallbacks estáticos de segurança.", erro);
             }
         }
+
+        // ==========================================
+        // SISTEMA DE COMUNICADOS DO WORDPRESS
+        // ==========================================
+        // URL da API REST do WordPress para puxar posts do blog/comunicados.
+        // Se você quiser filtrar por uma categoria específica, crie a categoria no WordPress (ex: "Comunicados")
+        // e adicione "&categories=ID_DA_CATEGORIA" ao final da URL abaixo.
+        const WP_POSTS_API_URL = 'https://implatec.com.br/wp-json/wp/v2/posts?per_page=3';
+
+        async function carregarComunicadosWordPress() {
+            if (!WP_POSTS_API_URL) return;
+
+            try {
+                const response = await fetch(WP_POSTS_API_URL);
+                if (!response.ok) throw new Error("Erro HTTP: " + response.status);
+                
+                const posts = await response.json();
+
+                if (Array.isArray(posts) && posts.length > 0) {
+                    const container = document.querySelector('.news-list');
+                    if (!container) return;
+
+                    // 1. Remover o placeholder estático de "Nenhum comunicado ativo" ou posts anteriores
+                    const cardsAntigos = container.querySelectorAll('.news-card[data-category="internos"], div[data-category="internos"]');
+                    cardsAntigos.forEach(card => card.remove());
+
+                    // 2. Renderizar os posts dinâmicos vindos diretamente do WordPress
+                    // Revertemos o array para manter a ordem correta (mais novos no topo) ao usar insertBefore
+                    posts.reverse().forEach(post => {
+                        const descriptionHTML = post.excerpt?.rendered || post.content?.rendered || '';
+                        const cleanedDesc = limparDescricao(descriptionHTML, 180);
+                        const dateStr = formatarDataRSS(post.date);
+                        
+                        const card = document.createElement('article');
+                        card.className = `news-card`; // Visível por padrão pois fica na primeira aba ativa
+                        card.setAttribute('data-category', 'internos');
+                        
+                        // Card completo vira um link para ler a notícia no blog do WordPress
+                        card.setAttribute('onclick', `window.open('${post.link}', '_blank')`);
+                        card.style.cursor = 'pointer';
+                        
+                        card.innerHTML = `
+                            <div class="news-date">${dateStr}</div>
+                            <div class="news-content">
+                                <h3>${post.title.rendered}</h3>
+                                <p>${cleanedDesc}</p>
+                            </div>
+                        `;
+                        
+                        // Insere no topo da lista (antes do primeiro item)
+                        container.insertBefore(card, container.firstChild);
+                    });
+                    console.log("Comunicados internos carregados do WordPress!");
+                }
+            } catch (erro) {
+                console.warn("Usando o placeholder de comunicados padrão (WordPress sem posts ou offline):", erro);
+            }
+        }
         
         // Dispara ao iniciar a página
         carregarAniversariantes();
         carregarNoticiasExternas();
+        carregarComunicadosWordPress();
 
         // ==========================================
         // SISTEMA DE CALENDÁRIO E FERIADOS

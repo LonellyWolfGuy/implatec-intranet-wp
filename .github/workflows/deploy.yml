@@ -1,0 +1,30 @@
+name: Deploy Intranet to WordPress Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy to Server
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+
+    - name: 🚀 Sync files via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        # Pasta remota no servidor WordPress onde está a pasta da intranet (ex: public_html/intranet/)
+        server-dir: ${{ secrets.FTP_REMOTE_DIR }} 
+        local-dir: ./
+        exclude: |
+          **/.git*
+          **/.git*/**
+          README.md
+          download.ps1
+          intranet-implatec.zip
