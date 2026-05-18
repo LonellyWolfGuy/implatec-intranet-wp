@@ -13,17 +13,35 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 🚀 Upload files via LFTP
+    - name: 🚀 Upload files via Python FTP
       run: |
-        sudo apt-get update && sudo apt-get install -y lftp
-        lftp -c "
-          set ftp:ssl-allow no;
-          set ftp:passive-mode true;
-          open -u '${{ secrets.FTP_USERNAME }}','${{ secrets.FTP_PASSWORD }}' '${{ secrets.FTP_SERVER }}';
-          cd ${{ secrets.FTP_REMOTE_DIR }};
-          put -O . index.html;
-          put -O . styles.css;
-          put -O . .htaccess;
-          put -O . logo-novo.png;
-          quit
-        "
+        python3 << 'EOF'
+        import ftplib, os, sys
+
+        SERVER   = "${{ secrets.FTP_SERVER }}"
+        USERNAME = "${{ secrets.FTP_USERNAME }}"
+        PASSWORD = "${{ secrets.FTP_PASSWORD }}"
+        REMOTE   = "${{ secrets.FTP_REMOTE_DIR }}"
+
+        FILES = ["index.html", "styles.css", "logo-novo.png", ".htaccess"]
+
+        print(f"Conectando em {SERVER}:21 ...")
+        ftp = ftplib.FTP()
+        ftp.connect(SERVER, 21)
+        ftp.login(USERNAME, PASSWORD)
+        print(f"Login OK. Diretório atual: {ftp.pwd()}")
+
+        ftp.cwd(REMOTE)
+        print(f"Navegado para: {ftp.pwd()}")
+
+        for fname in FILES:
+            if os.path.exists(fname):
+                with open(fname, "rb") as f:
+                    ftp.storbinary(f"STOR {fname}", f)
+                    print(f"✅ Enviado: {fname}")
+            else:
+                print(f"⚠️  Arquivo não encontrado localmente: {fname}")
+
+        ftp.quit()
+        print("Deploy concluído com sucesso!")
+        EOF
