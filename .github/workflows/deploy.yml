@@ -22,6 +22,8 @@ jobs:
         # Pasta remota no servidor WordPress onde está a pasta da intranet (ex: public_html/intranet/)
         server-dir: ${{ secrets.FTP_REMOTE_DIR }} 
         local-dir: ./
+        port: 21
+        protocol: ftp
         exclude: |
           **/.git*
           **/.git*/**
